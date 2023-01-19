@@ -1,0 +1,12 @@
+[requires]
+libcurl/7.87.0
+nlohmann_json/3.11.2
+
+[generators]
+visual_studio
+
+[options]
+libcurl:shared=True
+
+[imports]
+bin, *.dll -> f:\Source\MediaServer\MediaServer\x64\Debug\

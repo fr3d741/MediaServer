@@ -30,3 +30,14 @@
 *.exe
 *.out
 *.app
+
+/MediaServer/.vs/
+*.vcxproj.user
+x64/
+/.gitignore
+/MediaServer/conan.lock
+/MediaServer/conan_imports_manifest.txt
+/MediaServer/conanbuildinfo.props
+/MediaServer/conanbuildinfo.txt
+/MediaServer/conaninfo.txt
+/MediaServer/graph_info.json
