@@ -16,7 +16,7 @@
 
 using namespace File_System;
 
-void WinFSWatcher::WatchDirectories(Logging::ILogger::Ptr logger, std::vector<std::string>& paths, IMessageQueue::Ptr queue)
+void WinFSWatcher::WatchDirectories(Logging::ILogger::Ptr logger, const std::vector<std::string>& paths, IMessageQueue::Ptr queue)
 {
     static std::jthread worker_thread;
 

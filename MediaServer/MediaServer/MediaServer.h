@@ -13,7 +13,7 @@ class MediaServer {
 
     Logging::ILogger::Ptr _logger;
     IMessageQueue::Ptr _queue;
-    std::set<std::string> _cache;
+    std::set<std::wstring> _cache;
     std::map<std::string, int> _path_types;
     IStreamWriter::Ptr _writer;
 

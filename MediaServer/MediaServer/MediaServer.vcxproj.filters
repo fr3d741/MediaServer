@@ -61,9 +61,6 @@
       <Filter>Utility</Filter>
     </ClCompile>
     <ClCompile Include="CommonDefines.cpp" />
-    <ClCompile Include="Season.cpp">
-      <Filter>Model</Filter>
-    </ClCompile>
     <ClCompile Include="IConfiguration.cpp">
       <Filter>Configuration</Filter>
     </ClCompile>
@@ -124,9 +121,6 @@
     </ClInclude>
     <ClInclude Include="IMessageQueue.h">
       <Filter>Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="Season.h">
-      <Filter>Model</Filter>
     </ClInclude>
     <ClInclude Include="IConfiguration.h">
       <Filter>Configuration</Filter>

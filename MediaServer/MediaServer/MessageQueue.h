@@ -14,6 +14,7 @@ public:
 
     void Add(const std::string& msg) override;
     std::string Pop() override;
+    virtual std::queue<std::string> BulkPop() override;
     bool HasMessage() const override;
 };
 

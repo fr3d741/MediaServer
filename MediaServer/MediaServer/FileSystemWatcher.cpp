@@ -45,5 +45,19 @@ void
 FileSystemWatcher::Start() {
 
     _started = true;
+#ifdef _WIN64
     WinFSWatcher::WatchDirectories(_logger, _paths, _queue);
+#elif __linux__
+    // TODO:
+#endif
+}
+
+void 
+FileSystemWatcher::Stop() {
+    _started = false;
+#ifdef _WIN64
+    WinFSWatcher::WatchDirectories(_logger, {}, _queue);
+#elif __linux__
+    // TODO:
+#endif
 }

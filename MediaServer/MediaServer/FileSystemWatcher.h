@@ -13,6 +13,7 @@ namespace File_System {
         virtual void AddPath(const std::string& path) = 0;
         virtual void AddPath(const std::vector<std::string>& paths) = 0;
         virtual void Start() = 0;
+        virtual void Stop() = 0;
     };
 
     class FileSystemWatcher : public IFileSystemWatcher {
@@ -26,6 +27,7 @@ namespace File_System {
         void AddPath(const std::string& path) override;
         void AddPath(const std::vector<std::string>& paths) override;
         void Start() override;
+        void Stop() override;
     };
 
 }

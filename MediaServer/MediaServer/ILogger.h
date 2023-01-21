@@ -11,5 +11,6 @@ namespace Logging {
 
         virtual void LogMessage(const char* msg) = 0;
         virtual void LogMessage(const std::string& msg) = 0;
+        virtual void LogMessage(const std::wstring& msg) = 0;
     };
 }

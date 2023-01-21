@@ -17,6 +17,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <filesystem>
 
 static JsonNode::Ptr 
 ReadConfigFile(Logging::ILogger::Ptr logger) {
@@ -30,7 +31,7 @@ ReadConfigFile(Logging::ILogger::Ptr logger) {
 
 class MockWriter :public IStreamWriter {
 
-    std::ofstream out;
+    std::wofstream out;
     bool is_good = false;
 public:
     MockWriter() {
@@ -40,19 +41,32 @@ public:
 
     void Write(const std::string& path, const std::string& content) {
 
-        XmlNode root("file");
-        root.AddAttribute("path", path);
-        root.AddChild("value", content);
-        out << root.Dump();
+        out << GeneralUtilities::Convert(path) << "\t\t" << GeneralUtilities::Convert(content) << std::endl;
+        out.flush();
+    }
+
+    void Write(const std::wstring& path, const std::wstring& content) {
+
+        out << path << "\t\t" << content << std::endl;
+        out.flush();
+    }
+
+    void Write(const std::string& path, const std::wstring& content) {
+
+        out << GeneralUtilities::Convert(path) << "\t\t" << content << std::endl;
         out.flush();
     }
 };
 
 int main()
 {
+    std::setlocale(LC_ALL, "");
+    std::locale::global(std::locale(""));
+
     IConfiguration::Instance(std::make_shared<Configuration>());
 
     auto logger = std::make_shared<Logging::Logger>();
+    logger->Start();
     auto ptr = ReadConfigFile(logger);
 
     RestApi::ApiKey() = ptr->GetString("api_key");
@@ -84,75 +98,10 @@ int main()
     auto tcp_server = Factories::CreateTcpServer(message_queue);
     tcp_server->ListenOn(0);
 
-
     server.Start();
+
+    fs.Stop();
+    logger->Stop();
 
     return 1;
 }
-
-
-//#include <iostream>
-//#include <nlohmann/json.hpp>
-//
-//using json = nlohmann::json;
-//
-//int main()
-//{
-//    // create JSON arrays
-//    json j_no_init_list = json::array();
-//    json j_empty_init_list = json::array({});
-//    json j_nonempty_init_list = json::array({ "a", "b", "c", "d"});
-//    json j_list_of_pairs = json::array({ {"one", 1}, {"two", 2} });
-//
-//    // serialize the JSON arrays
-//    std::cout << j_no_init_list << '\n';
-//    std::cout << j_empty_init_list << '\n';
-//    std::cout << j_nonempty_init_list << '\n';
-//    std::cout << j_list_of_pairs << '\n';
-//
-//    auto js = json::parse("[\"a\", \"b\", \"c\", \"d\"]");
-//    std::cout << "aa:" << js[2] << std::endl;
-//    std::cout << js.dump();
-//}
-
-//
-//#include <iostream>
-//#include <iomanip>
-//#include <nlohmann/json.hpp>
-//
-//using json = nlohmann::json;
-//
-//int main()
-//{
-//    // create a JSON object
-//    json j;
-//    //=
-//    //{
-//    //    {"pi", 3.141},
-//    //    {"happy", true},
-//    //    {"name", "Niels"},
-//    //    {"nothing", nullptr},
-//    //    {
-//    //        "answer", {
-//    //            {"everything", 42}
-//    //        }
-//    //    },
-//    //    {"list", {1, 0, 2}},
-//    //    {
-//    //        "object", {
-//    //            {"currency", "USD"},
-//    //            {"value", 42.99}
-//    //        }
-//    //    }
-//    //};
-//
-//    // add new values
-//    j["new"]["key"]["value"] = { "another", "list" };
-//
-//    // count elements
-//    auto s = j.size();
-//    j["size"] = s;
-//
-//    // pretty print with indent of 4 spaces
-//    std::cout << std::setw(4) << j << '\n';
-//}

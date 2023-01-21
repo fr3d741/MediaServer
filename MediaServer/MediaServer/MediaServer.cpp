@@ -3,35 +3,14 @@
 #include <JsonNode.h>
 #include <CommonMedia.h>
 #include <TvShow.h>
+#include <GeneralUtilities.h>
 
 #include <chrono>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 
 using namespace std::chrono_literals;
-
-static std::string
-GetFileName(const std::filesystem::directory_entry& dir, MediaType media_type) {
-
-    const std::set<std::string> common_extensions = { ".mkv", ".avi", ".mpeg", ".mov", ".wmv", ".mp4", ".m4p", ".m4v" };
-
-    if (media_type == MediaType::TvShow)
-        return "tvshow.nfo";
-
-    for (auto const& dir_entry : std::filesystem::directory_iterator{ dir })
-    {
-        if (dir_entry.is_regular_file() == false)
-            continue;
-
-        auto ext = dir_entry.path().extension().string();
-        if (common_extensions.count(ext) == 0)
-            break;
-
-        return dir_entry.path().filename().string() + ".nfo";
-    }
-
-    return "movie.nfo";
-}
 
 static std::multimap<int, std::string> 
 MergeMessages(std::list<std::string>& local_storage, Logging::ILogger::Ptr logger) {
@@ -85,12 +64,14 @@ MediaServer::Start()
     std::list<std::string> local_storage;
     std::chrono::steady_clock::time_point clock;
     bool count_started = false;
-
     while (true) {
 
         if (_queue->HasMessage()) {
-            auto msg = _queue->Pop();
-            local_storage.push_back(msg);
+            auto msg = _queue->BulkPop();
+            while (msg.empty() == false) {
+                local_storage.push_back(msg.front());
+                msg.pop();
+            }
             clock = std::chrono::steady_clock::now();
             count_started = true;
         }
@@ -150,15 +131,15 @@ MediaServer::processMessage(std::string& message) {
                     continue;
 
 #if true
+                auto string_path = dir_entry.path().wstring();
                 // TODO: remove
                 { // do not parse until cache cleared
-                    auto string_path = dir_entry.path().string();
+                    
                     if (_cache.contains(string_path))
                         continue;
                     _cache.insert(string_path);
                 }
 #endif
-
                 std::shared_ptr<Media::CommonMedia> media;
                 switch (media_type)
                 {

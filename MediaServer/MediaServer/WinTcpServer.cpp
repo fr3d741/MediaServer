@@ -64,7 +64,8 @@ int WinTcpServer::listenCore(unsigned short port) {
     hints.ai_flags = AI_PASSIVE;
 
     // Resolve the server address and port
-    iResult = getaddrinfo(NULL, DEFAULT_PORT, &hints, &result);
+    auto port_str = std::to_string(port);
+    iResult = getaddrinfo(NULL, port_str.c_str(), &hints, &result);
     if (iResult != 0) {
         printf("getaddrinfo failed with error: %d\n", iResult);
         WSACleanup();

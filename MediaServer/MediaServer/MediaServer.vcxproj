@@ -116,9 +116,9 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)\$(ProjectName);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -130,7 +130,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
@@ -160,7 +160,6 @@
     <ClCompile Include="MessageQueue.cpp" />
     <ClCompile Include="RestApi.cpp" />
     <ClCompile Include="ScopedFunction.cpp" />
-    <ClCompile Include="Season.cpp" />
     <ClCompile Include="StreamWriter.cpp" />
     <ClCompile Include="TcpServerFactory.cpp" />
     <ClCompile Include="TvShow.cpp" />
@@ -184,7 +183,6 @@
     <ClInclude Include="RestApi.h" />
     <ClInclude Include="ScopedFunction.h" />
     <ClInclude Include="ITcpServer.h" />
-    <ClInclude Include="Season.h" />
     <ClInclude Include="StreamWriter.h" />
     <ClInclude Include="TcpServerFactory.h" />
     <ClInclude Include="TvShow.h" />

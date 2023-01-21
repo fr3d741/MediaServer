@@ -13,7 +13,7 @@ namespace Media {
     {
     protected:
         Logging::ILogger::Ptr _logger;
-        const std::string _title;
+        const std::wstring _title;
         const std::filesystem::directory_entry _entry;
         ::MediaType _media_type;
         JsonNode::Ptr _details;

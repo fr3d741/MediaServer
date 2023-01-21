@@ -100,15 +100,13 @@ extractActors(XmlNode& root, JsonNode::Ptr json, std::function<const char* (Tmdb
 
 CommonMedia::CommonMedia(Logging::ILogger::Ptr logger, const std::filesystem::directory_entry& entry, MediaType media_type)
     : _logger(logger)
-    , _title(entry.path().filename().string())
+    , _title(entry.path().filename().wstring())
     , _entry(entry)
     ,_media_type(media_type){
 }
 
 void
 CommonMedia::Fill(Logging::ILogger::Ptr logger, XmlNode& root, JsonNode::Ptr json, const std::vector<Property>& properties) {
-
-    int media_type = MediaType::Movie;
 
     auto country_local = extractCountryLocal(logger, json, "hu", [&](TmdbTags key) { return this->Tmdb(key); });
     for (auto prop : properties) {
@@ -232,10 +230,15 @@ bool
 CommonMedia::Init() {
 
     auto result_in_json = RestApi::SearchMovie(_title);
+    if (result_in_json.empty())
+    {
+        // TODO:
+        return false;
+    }
     auto json = JsonNode::Parse(_logger, result_in_json);
     _details = GetDetails(json);
     if (_details == nullptr) {
-        auto msg = std::format("Cannot find details for {}", _title);
+        auto msg = std::format(L"Cannot find details for {}", _title);
         _logger->LogMessage(msg);
         return false;
     }
@@ -257,19 +260,19 @@ CommonMedia::GetDetails(JsonNode::Ptr json_ptr) {
     auto js = values[0];
     if (values.size() != 1) {
 
-        const std::regex regex("[(][0-9]{4}[)]");
+        const std::wregex regex(L"[(][0-9]{4}[)]");
 
-        std::smatch match;
+        std::wsmatch match;
         std::regex_search(_title, match, regex);
-        std::string title_wo_year = match.prefix();
+        std::wstring title_wo_year = match.prefix();
         GeneralUtilities::LeftTrim(title_wo_year);
         GeneralUtilities::RightTrim(title_wo_year);
 
-        bool is_found = G::AreEqualCaseInsensitive(js->GetString(Tmdb(TmdbTags::name)), title_wo_year);
+        bool is_found = G::AreEqualCaseInsensitive(js->GetWString(Tmdb(TmdbTags::name)), title_wo_year);
         if (!is_found) {
             for (size_t i = 1; i < values.size(); ++i) {
                 auto ptr = values[i];
-                if (G::AreEqualCaseInsensitive(ptr->GetString(Tmdb(TmdbTags::name)), title_wo_year))
+                if (G::AreEqualCaseInsensitive(ptr->GetWString(Tmdb(TmdbTags::name)), title_wo_year))
                 {
                     is_found = true;
                     js = ptr;
@@ -281,7 +284,7 @@ CommonMedia::GetDetails(JsonNode::Ptr json_ptr) {
 
         XmlNode root("Multiple results");
         if (is_found) {
-            root.AddChild("Wants this", title_wo_year);
+            root.AddChild("Wants this", GeneralUtilities::Convert(title_wo_year));
             root.AddChild("Selected this", js->GetString(Tmdb(TmdbTags::name)));
         }
         else {

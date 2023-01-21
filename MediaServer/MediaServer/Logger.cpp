@@ -1,11 +1,11 @@
 #include <Logger.h>
-#include <thread>
+#include <GeneralUtilities.h>
+#include <XmlNode.h>
+
 #include <chrono>
 #include <sstream>
-#include <fstream>
 #include <filesystem>
 #include <iostream>
-#include <XmlNode.h>
 
 using namespace Logging;
 using namespace std::chrono_literals;
@@ -20,7 +20,6 @@ fileStream() {
     auto p = std::filesystem::current_path();
     std::cout << p.string() << std::endl;
     stream.open(file_path, std::ios::out);
-    auto ii = stream.is_open();
     return stream;
 }
 
@@ -37,12 +36,17 @@ GetTimeStamp() {
 }
 
 Logger::Logger() {
+    _messages = std::make_shared<std::list<std::string>>();
+}
 
-    static std::ofstream logger_file = fileStream();
-    auto isopen = logger_file.is_open();
-    auto isgood = logger_file.good();
+void 
+Logger::Start() {
 
-    static std::thread t([&]() {
+    _logger_file = fileStream();
+    if (_logger_file.is_open() == false || _logger_file.good() == false)
+        throw std::runtime_error("Unable to open log file");
+
+    _worker_thread = std::jthread([&](std::stop_token token) {
 
         while (true)
         {
@@ -54,16 +58,27 @@ Logger::Logger() {
 
             if (replica_messages != nullptr && !replica_messages->empty()) {
                 for (auto msg : *replica_messages) {
-                    logger_file << msg << std::endl;
+                    _logger_file << msg << std::endl;
                 }
-                logger_file.flush();
-                logger_file.close();
-                break;
+                _logger_file.flush();
             }
 
+            if (token.stop_requested() && replica_messages->empty()) {
+                break;
+            }
             std::this_thread::sleep_for(1min);
         }
     });
+}
+
+void 
+Logger::Stop() {
+
+    _worker_thread.request_stop();
+    if (_worker_thread.joinable())
+        _worker_thread.join();
+
+    _logger_file.close();
 }
 
 void
@@ -84,4 +99,10 @@ void
 Logger::LogMessage(const std::string& msg) {
 
     LogMessage(msg.c_str());
+}
+
+void
+Logger::LogMessage(const std::wstring& msg) {
+
+    LogMessage(GeneralUtilities::Convert(msg));
 }

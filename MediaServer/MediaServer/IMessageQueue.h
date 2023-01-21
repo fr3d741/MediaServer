@@ -2,6 +2,7 @@
 
 #include <string>
 #include <memory>
+#include <queue>
 
 class IMessageQueue {
 public:
@@ -9,5 +10,6 @@ public:
 
     virtual void Add(const std::string& msg) = 0;
     virtual std::string Pop() = 0;
+    virtual std::queue<std::string> BulkPop() = 0;
     virtual bool HasMessage() const = 0;
 };

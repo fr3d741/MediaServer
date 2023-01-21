@@ -1,5 +1,6 @@
 #include <RestApi.h>
 #include <ScopedFunction.h>
+#include <GeneralUtilities.h>
 
 #include <curl/curl.h>
 
@@ -10,8 +11,10 @@
 #include <iostream>
 
 using namespace std::chrono_literals;
+using G = GeneralUtilities;
 
-size_t write_callback(char* ptr, size_t size, size_t nmemb, void* userdata) {
+size_t 
+write_callback(char* ptr, size_t /*size*/, size_t nmemb, void* userdata) {
 
     auto str = reinterpret_cast<std::string*>(userdata);
     str->append(ptr, nmemb);
@@ -24,15 +27,22 @@ SendRequest(const std::string& request) {
     { 
         // Implement rate limiting: 20 req/s
         // According to TMDB API there is no such limit, but in practice there is
-        static std::array<int, 60> _requests = {};
-        std::chrono::hh_mm_ss hh(std::chrono::steady_clock::now().time_since_epoch());
+        static int request_count = 0;
+        static std::chrono::time_point last_time = std::chrono::steady_clock::now();
+        static long long last_second = 0;
 
-        auto sec = hh.seconds().count();
-        _requests[sec]++;
-        _requests[(sec+1)%60] = 0;
-        if (_requests[sec] == 20) {
-            std::cout << "Limit requests" << std::endl;
-            std::this_thread::sleep_for(500ms);
+        request_count++;
+
+        const std::chrono::time_point now = std::chrono::steady_clock::now();
+        const std::chrono::duration duration = now - last_time;
+        const long long second = std::chrono::duration_cast<std::chrono::seconds>(duration).count();
+        if (last_second != second) {
+            request_count = 0;
+            last_second = second;
+            last_time = now;
+        }
+        else if (duration < 1s && 20 <= request_count) {
+            std::this_thread::sleep_for(1s - duration);
         }
     }
 
@@ -54,18 +64,21 @@ SendRequest(const std::string& request) {
 }
 
 static std::string
-CreateSearchRequest(const std::string title, std::string_view query, const std::string& api_key) {
+CreateSearchRequest(const std::wstring title, std::string_view query, const std::string& api_key) {
 
-    const std::regex regex("[(][0-9]{4}[)]");
+    const std::wregex regex(L"[(][0-9]{4}[)]");
+    const std::wregex regex_year(L"[0-9]{4}");
 
-    std::smatch match;
+    std::wsmatch match;
     if (std::regex_search(title, match, regex) == false)
         return "";
 
-    const std::string title_wo_year = std::regex_replace(title, regex, "");
-    std::string year = match.str().substr(1, 4);
+    auto title_wo_year = G::Convert(match.prefix());
+    auto intermediate = match.str();
+    std::regex_search(intermediate, match, regex_year);
+    auto year = G::Convert(match.str());
 
-    auto title_uri_coded = curl_easy_escape(/*discarded*/nullptr, title_wo_year.c_str(), static_cast<int>(title_wo_year.size()));
+    auto title_uri_coded = curl_easy_escape(/*discarded*/nullptr, title_wo_year.data(), static_cast<int>(title_wo_year.size()));
     ScopedFunction fn([=]() { curl_free(title_uri_coded); });
 
     return std::vformat(query, std::make_format_args(api_key, title_uri_coded, year));
@@ -77,7 +90,7 @@ std::string& RestApi::ApiKey() {
 }
 
 std::string
-RestApi::SearchMovie(const std::string& title){
+RestApi::SearchMovie(const std::wstring& title){
 
     const std::string_view query = "https://api.themoviedb.org/3/search/movie?api_key={}&language=en-US&query={}&page=1&include_adult=false&year={}";
     auto request = CreateSearchRequest(title, query, ApiKey());
@@ -85,7 +98,7 @@ RestApi::SearchMovie(const std::string& title){
 }
 
 std::string
-RestApi::SearchTv(const std::string& title){
+RestApi::SearchTv(const std::wstring& title){
 
     const char* query = "https://api.themoviedb.org/3/search/tv?api_key={}&language=en-US&page=1&query={}&include_adult=false&first_air_date_year={}";
 

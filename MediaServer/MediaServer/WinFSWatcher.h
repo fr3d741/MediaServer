@@ -13,7 +13,7 @@ namespace File_System {
     class WinFSWatcher {
     public:
 
-        static void WatchDirectories(Logging::ILogger::Ptr logger, std::vector<std::string>& paths, IMessageQueue::Ptr queue);
+        static void WatchDirectories(Logging::ILogger::Ptr logger, const std::vector<std::string>& paths, IMessageQueue::Ptr queue);
     };
 
 }

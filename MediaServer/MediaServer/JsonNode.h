@@ -31,6 +31,7 @@ public:
 
     int GetInt(const std::string& key);
     std::string GetString(const std::string& key);
+    std::wstring GetWString(const std::string& key);
     double GetDouble(const std::string& key);
     bool GetBool(const std::string& key);
     Ptr GetPointer(const std::string& key);

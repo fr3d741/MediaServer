@@ -6,8 +6,8 @@ class RestApi
 {
 public:
     static std::string& ApiKey();
-    static std::string SearchMovie(const std::string& title);
-    static std::string SearchTv(const std::string& title);
+    static std::string SearchMovie(const std::wstring& title);
+    static std::string SearchTv(const std::wstring& title);
 
     static std::string MovieDetails(const std::string& id);
     static std::string TvDetails(const std::string& id);

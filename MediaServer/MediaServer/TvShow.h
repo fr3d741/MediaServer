@@ -3,6 +3,8 @@
 #include <CommonMedia.h>
 
 #include <string>
+#include <filesystem>
+#include <map>
 
 namespace Media {
 
@@ -18,7 +20,7 @@ namespace Media {
         const char* Tmdb(TmdbTags key) override;
         std::string GetFileName() override;
         std::string GetDetails(const std::string& id) override;
-
+    public:
         void CreateEpisodeNfos(std::map<std::string, XmlNode>& dir_entry);
     };
 

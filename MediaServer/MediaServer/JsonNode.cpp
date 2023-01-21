@@ -1,4 +1,5 @@
 #include <JsonNode.h>
+#include <GeneralUtilities.h>
 
 #include <nlohmann/json.hpp>
 
@@ -23,7 +24,7 @@ public:
 
     virtual Json Build() = 0;
 
-    virtual std::list<std::string> FindTagValues(const std::string& key) { return {}; }
+    virtual std::list<std::string> FindTagValues(const std::string& ) { return {}; }
 };
 
 class CleanJsonNodeImpl : public JsonNodeImpl {
@@ -346,6 +347,21 @@ JsonNode::GetString(const std::string& key) {
         //TODO: logging
     }
     return "";
+}
+
+std::wstring
+JsonNode::GetWString(const std::string& key) {
+
+    auto v = _impl->Get(key);
+    try
+    {
+        return GeneralUtilities::Convert(std::get<std::string>(v));
+    }
+    catch (const std::bad_variant_access&)
+    {
+        //TODO: logging
+    }
+    return L"";
 }
 
 double
