@@ -4,8 +4,6 @@
 
 #include <chrono>
 #include <sstream>
-#include <filesystem>
-#include <iostream>
 
 using namespace Logging;
 using namespace std::chrono_literals;
@@ -17,8 +15,6 @@ fileStream() {
     auto now = std::chrono::steady_clock::now();
     auto file = std::to_string(now.time_since_epoch().count());
     auto file_path = "logs\\" + file + ".mslog";
-    auto p = std::filesystem::current_path();
-    std::cout << p.string() << std::endl;
     stream.open(file_path, std::ios::out);
     return stream;
 }
@@ -91,8 +87,6 @@ Logger::LogMessage(const char* msg) {
         std::lock_guard guard(_mutex);
         _messages->push_back(root.Dump());
     }
-
-    //std::cout << msg << std::endl;
 }
 
 void
