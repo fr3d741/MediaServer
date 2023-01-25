@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Configuration">
+      <UniqueIdentifier>{33ca4e81-2037-4e25-b532-66a2dd026719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Factories">
+      <UniqueIdentifier>{e806c6e9-b033-402d-ac94-b3c02a3268c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FileSystem">
+      <UniqueIdentifier>{6f8aa4fa-627b-4a5f-9336-b68bead5a875}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Logging">
+      <UniqueIdentifier>{37012de2-eccc-4748-8a43-4b729c14a239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{6e375d1e-3c0c-4371-8ce2-8dde007d512a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Networking">
+      <UniqueIdentifier>{a3cbdedd-7dbc-4234-bbda-73b4e0211a02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{a032b0e7-14a0-4ae7-9e82-d21e0a7e0d60}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CommonDefines.cpp" />
+    <ClCompile Include="Configuration\Configuration.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="Configuration\IConfiguration.cpp">
+      <Filter>Configuration</Filter>
+    </ClCompile>
+    <ClCompile Include="Factories\TcpServerFactory.cpp">
+      <Filter>Factories</Filter>
+    </ClCompile>
+    <ClCompile Include="FileSystem\WinFSWatcher.cpp">
+      <Filter>FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FileSystem\FileSystemWatcher.cpp">
+      <Filter>FileSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Logging\Logger.cpp">
+      <Filter>Logging</Filter>
+    </ClCompile>
+    <ClCompile Include="Model\TvShow.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\RestApi.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking\WinTcpServer.cpp">
+      <Filter>Networking</Filter>
+    </ClCompile>
+    <ClCompile Include="MediaServer.cpp" />
+    <ClCompile Include="Model\CommonMedia.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\GeneralUtilities.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\JsonNode.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\MessageQueue.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\ScopedFunction.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\StreamWriter.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility\XmlNode.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Factories\ConfigurationFactory.cpp">
+      <Filter>Factories</Filter>
+    </ClCompile>
+    <ClCompile Include="Factories\MessageQueueFactory.cpp">
+      <Filter>Factories</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CommonDefines.h" />
+    <ClInclude Include="Configuration\Configuration.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="Configuration\IConfiguration.h">
+      <Filter>Configuration</Filter>
+    </ClInclude>
+    <ClInclude Include="Factories\TcpServerFactory.h">
+      <Filter>Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="FileSystem\WinFSWatcher.h">
+      <Filter>FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FileSystem\FileSystemWatcher.h">
+      <Filter>FileSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging\ILogger.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="Logging\Logger.h">
+      <Filter>Logging</Filter>
+    </ClInclude>
+    <ClInclude Include="Model\TvShow.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\ITcpServer.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\RestApi.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking\WinTcpServer.h">
+      <Filter>Networking</Filter>
+    </ClInclude>
+    <ClInclude Include="MediaServer.h" />
+    <ClInclude Include="Model\CommonMedia.h">
+      <Filter>Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\IMessageQueue.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\GeneralUtilities.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\JsonNode.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\MessageQueue.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\ScopedFunction.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\StreamWriter.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility\XmlNode.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Macros.h" />
+    <ClInclude Include="Factories\ConfigurationFactory.h">
+      <Filter>Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="Factories\MessageQueueFactory.h">
+      <Filter>Factories</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
