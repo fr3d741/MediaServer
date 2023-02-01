@@ -36,7 +36,7 @@ Format(int season, int episode) {
         stream << std::setfill('0') << std::setw(3) << episode;
         episode_str = stream.str();
     }
-    return std::format("S{}E{}", season_str, episode_str);
+    return "S" + season_str + "E" + episode_str;
 }
 
 static std::string

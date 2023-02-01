@@ -5,7 +5,6 @@
 #include <Configuration/IConfiguration.h>
 
 #include <regex>
-#include <format>
 #include <set>
 
 using namespace Media;
@@ -341,7 +340,7 @@ CommonMedia::Init() {
     _details = GetDetails(json, [&](JsonNode::Ptr pp) { return pp->GetWString(Tmdb(TmdbTags::title)); });
     if (_details == nullptr) {
         XmlNode root("Init");
-        auto msg = std::format(L"Cannot find details for {}", _title);
+        auto msg = L"Cannot find details for {}" + _title;
         root.AddAttribute("message", msg);
         root.AddChild("CompleteJSON", json->ToString());
         _logger->LogMessage(root.Dump());

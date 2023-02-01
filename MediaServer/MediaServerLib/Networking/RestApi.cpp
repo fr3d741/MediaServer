@@ -4,11 +4,11 @@
 
 #include <curl/curl.h>
 
-#include <format>
 #include <regex>
 #include <array>
 #include <chrono>
 #include <iostream>
+#include <assert.h>
 
 using namespace std::chrono_literals;
 using G = GeneralUtilities;
@@ -66,7 +66,9 @@ SendRequest(const std::string& request) {
 }
 
 static std::string
-CreateSearchRequest(const string title, std::string_view query, const std::string& api_key) {
+CreateSearchRequest(const string title, std::vector<std::string> parts,  const std::string& api_key) {
+
+    assert(parts.size() == 3);
 
     const rgx regex(L"[(][0-9]{4}[)]");
     const rgx regex_year(L"[0-9]{4}");
@@ -83,7 +85,7 @@ CreateSearchRequest(const string title, std::string_view query, const std::strin
     auto title_uri_coded = curl_easy_escape(/*discarded*/nullptr, title_wo_year.data(), static_cast<int>(title_wo_year.size()));
     ScopedFunction fn([=]() { curl_free(title_uri_coded); });
 
-    return std::vformat(query, std::make_format_args(api_key, title_uri_coded, year));
+    return parts[0] + api_key + parts[1] + title_uri_coded + parts[2] + year;
 }
 
 std::string& RestApi::ApiKey() {
@@ -94,52 +96,49 @@ std::string& RestApi::ApiKey() {
 std::string
 RestApi::SearchMovie(const string& title){
 
-    const std::string_view query = "https://api.themoviedb.org/3/search/movie?api_key={}&language=en-US&query={}&page=1&include_adult=false&year={}";
-    auto request = CreateSearchRequest(title, query, ApiKey());
+    auto request = CreateSearchRequest(title, { "https://api.themoviedb.org/3/search/movie?api_key=", "&language=en-US&query=", "&page=1&include_adult=false&year=" }, ApiKey());
     return SendRequest(request);
 }
 
 std::string
 RestApi::SearchTv(const string& title){
 
-    const char* query = "https://api.themoviedb.org/3/search/tv?api_key={}&language=en-US&page=1&query={}&include_adult=false&first_air_date_year={}";
-
-    auto request = CreateSearchRequest(title, query, ApiKey());
+    auto request = CreateSearchRequest(title, { "https://api.themoviedb.org/3/search/tv?api_key=","&language=en-US&page=1&query=","&include_adult=false&first_air_date_year=" }, ApiKey());
     return SendRequest(request);
 }
 
 std::string 
 RestApi::MovieDetails(const std::string& id) {
 
-    auto request = std::format("https://api.themoviedb.org/3/movie/{}?api_key={}&append_to_response=images,translations,keywords&include_image_language=en,hu,null", id, ApiKey());
+    auto request = "https://api.themoviedb.org/3/movie/" + id + "?api_key=" + ApiKey() + "&append_to_response=images,translations,keywords&include_image_language=en,hu,null";
     return SendRequest(request);
 }
 
 std::string 
 RestApi::TvDetails(const std::string& id) {
 
-    auto request = std::format("https://api.themoviedb.org/3/tv/{}?api_key={}&append_to_response=images,translations,keywords,credits&include_image_language=en,HU,null", id, ApiKey());
+    auto request = "https://api.themoviedb.org/3/tv/" + id + "?api_key=" + ApiKey() + "&append_to_response=images,translations,keywords,credits&include_image_language=en,HU,null";
     return SendRequest(request);
 }
 
 std::string 
 RestApi::EpisodeGroups(const std::string& id) {
 
-    auto request = std::format("https://api.themoviedb.org/3/tv/{}/episode_groups?api_key={}", id, ApiKey());
+    auto request = "https://api.themoviedb.org/3/tv/" + id + "/episode_groups?api_key=" + ApiKey();
     return SendRequest(request);
 }
 
 std::string 
 RestApi::EpisodeGroup(const std::string& group_id) {
 
-    auto request = std::format("https://api.themoviedb.org/3/tv/episode_group/{}?api_key={}&append_to_response=credits", group_id, ApiKey());
+    auto request = "https://api.themoviedb.org/3/tv/episode_group/" + group_id + "?api_key=" + ApiKey() + "&append_to_response=credits";
     return SendRequest(request);
 }
 
 std::string 
 RestApi::Season(const std::string& id, int season_nr) {
 
-    auto request = std::format("https://api.themoviedb.org/3/tv/{}/season/{}?api_key={}&append_to_response=translations", id, std::to_string(season_nr), ApiKey());
+    auto request = "https://api.themoviedb.org/3/tv/" + id + "/season/" + std::to_string(season_nr) + "?api_key=" + ApiKey() + "&append_to_response=translations";
     return SendRequest(request);
 }
 
