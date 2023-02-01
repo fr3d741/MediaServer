@@ -42,7 +42,7 @@ Format(int season, int episode) {
 static std::string
 ConvertToCommonFormat(const string& str) {
 
-    const rgx number_filter(U"[0-9]{1,3}");
+    const rgx number_filter(L"[0-9]{1,3}");
     auto view = string_view(str);
     auto it = std::regex_iterator<string_view::iterator>{ view.cbegin(), view.cend(), number_filter };
     
@@ -80,19 +80,19 @@ GatherEpisodesFromFS(Logging::ILogger::Ptr logger, const std::filesystem::direct
             if (CommonMedia::IsMediaFile(file_entry.path()) == false)
                 continue;
 
-            const rgx episode_filter(U"S[0-9]{1,3}E[0-9]{1,3}", std::regex_constants::icase);
+            const rgx episode_filter(L"S[0-9]{1,3}E[0-9]{1,3}", std::regex_constants::icase);
             rgx_match file_match;
-            auto file_name = file_entry.path().filename().generic_u32string();
+            auto file_name = file_entry.path().filename().generic_wstring();
             if (std::regex_search(file_name, file_match, episode_filter) == false)
             {
                 XmlNode root("Incorrect file pattern");
-                root.AddAttribute("file", file_entry.path().generic_u32string());
+                root.AddAttribute("file", file_entry.path().generic_wstring());
                 logger->LogMessage(root.Dump());
                 continue;
             }
 
             episode_count++;
-            season_episodes.insert({ ConvertToCommonFormat(file_match.str()), file_entry.path().generic_u32string() });
+            season_episodes.insert({ ConvertToCommonFormat(file_match.str()), file_entry.path().generic_wstring() });
         }
     }
 }
@@ -227,7 +227,7 @@ TvShow::Init() {
     auto result_in_json = RestApi::SearchTv(_title);
     if (result_in_json.empty())
     {
-        auto msg = U"Empty request response for " + _title;
+        auto msg = L"Empty request response for " + _title;
         _logger->LogMessage(msg);
         return false;
     }
@@ -235,7 +235,7 @@ TvShow::Init() {
     auto json = JsonNode::Parse(_logger, result_in_json);
     _details = CommonMedia::GetDetails(json, [&](JsonNode::Ptr pp) { return pp->GetWString(Tmdb(TmdbTags::name)); });
     if (_details == nullptr) {
-        auto msg = U"Cannot find details for " + _title;
+        auto msg = L"Cannot find details for " + _title;
         _logger->LogMessage(msg);
         return false;
     }

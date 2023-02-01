@@ -106,7 +106,7 @@ GeneralUtilities::Contains(const string& in, const string& what) {
 int 
 GeneralUtilities::ConvertToYear(const string& str) {
 
-    const rgx wregex(U"[0-9]{4}");
+    const rgx wregex(L"[0-9]{4}");
     rgx_match wmatch;
     if (std::regex_search(str, wmatch, wregex) == false)
     {
@@ -148,30 +148,30 @@ string
 GeneralUtilities::ConvertLatinToRomanNumbers(const string& str1) {
 
     constexpr std::array<string_view,21> roman_numbers = {
-        U"",
-        U"I",
-        U"II",
-        U"III",
-        U"IV",
-        U"V",
-        U"VI",
-        U"VII",
-        U"VIII",
-        U"IX",
-        U"X",
-        U"XI",
-        U"XII",
-        U"XIII",
-        U"XIV",
-        U"XV",
-        U"XVI",
-        U"XVII",
-        U"XVIII",
-        U"XIX",
-        U"XX",
+        L"",
+        L"I",
+        L"II",
+        L"III",
+        L"IV",
+        L"V",
+        L"VI",
+        L"VII",
+        L"VIII",
+        L"IX",
+        L"X",
+        L"XI",
+        L"XII",
+        L"XIII",
+        L"XIV",
+        L"XV",
+        L"XVI",
+        L"XVII",
+        L"XVIII",
+        L"XIX",
+        L"XX",
     };
 
-    const rgx wregex(U"[0-9]{1,2}");
+    const rgx wregex(L"[0-9]{1,2}");
     rgx_match wmatch;
     if (std::regex_search(str1, wmatch, wregex) == false)
         return str1;
@@ -194,7 +194,7 @@ GeneralUtilities::ConvertLatinToRomanNumbers(const string& str1) {
 bool 
 GeneralUtilities::HasNumber(const string& str) {
 
-    const rgx wregex(U"[0-9]");
+    const rgx wregex(L"[0-9]");
     rgx_match wmatch;
     return std::regex_search(str, wmatch, wregex);
 }

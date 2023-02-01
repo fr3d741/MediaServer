@@ -1,5 +1,6 @@
 #pragma once
 
+#include <CommonDefines.h>
 #include <map>
 #include <string>
 #include <list>

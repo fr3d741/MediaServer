@@ -42,7 +42,7 @@ static JsonNode::Ptr
 SelectOne(Logging::ILogger::Ptr logger, MediaType media_type, const string& expected_title, const std::vector<JsonNode::Ptr>& values, std::function<string(JsonNode::Ptr)> get_title_fn, bool& is_match_date, bool& is_match_title) {
 
     std::map<Key, JsonNode::Ptr> result_mapping;
-    const rgx regex(U"[(][0-9]{4}[)]");
+    const rgx regex(L"[(][0-9]{4}[)]");
     rgx_match match;
     std::regex_search(expected_title, match, regex);
     string title_wo_year = match.prefix();
@@ -200,7 +200,7 @@ extractActors(XmlNode& root, JsonNode::Ptr json, std::function<const char* (Tmdb
 
 CommonMedia::CommonMedia(Logging::ILogger::Ptr logger, const std::filesystem::directory_entry& entry, MediaType media_type)
     : _logger(logger)
-    , _title(entry.path().filename().generic_u32string())
+    , _title(entry.path().filename().generic_wstring())
     , _entry(entry)
     ,_media_type(media_type){
 }

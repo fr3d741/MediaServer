@@ -8,7 +8,7 @@
 #include <fstream>
 
 #ifdef _WIN32
-    typedef char32_t char_t;
+    typedef wchar_t char_t;
 #endif
 
 typedef std::basic_string<char_t> string;

@@ -68,8 +68,8 @@ SendRequest(const std::string& request) {
 static std::string
 CreateSearchRequest(const string title, std::string_view query, const std::string& api_key) {
 
-    const rgx regex(U"[(][0-9]{4}[)]");
-    const rgx regex_year(U"[0-9]{4}");
+    const rgx regex(L"[(][0-9]{4}[)]");
+    const rgx regex_year(L"[0-9]{4}");
 
     rgx_match match;
     if (std::regex_search(title, match, regex) == false)
