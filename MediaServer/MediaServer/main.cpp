@@ -1,6 +1,4 @@
-﻿#pragma once
-
-#include <Configuration/IConfiguration.h>
+﻿#include <Configuration/IConfiguration.h>
 
 #include <Factories/ConfigurationFactory.h>
 #include <Factories/MessageQueueFactory.h>
@@ -28,18 +26,25 @@
 
 class MockWriter :public IStreamWriter {
 
-    //std::wofstream out;
+#ifdef _WIN32
     FILE* out = nullptr;
+#else
+    std::wofstream out;
+#endif
+
+
     bool is_good = false;
 public:
     MockWriter() {
 
-        
+        #ifdef _WIN32
         out = _wfopen(L"f:\\tmp\\log.txt", L"wb");
-        //out.open("f:\\tmp\\log.txt", std::ios::binary);
+        #else
+        out.open("/home/fred/log.txt", std::ios::binary);
         //is_good = out.is_open() && out.good();
         //out.exceptions(std::wofstream::failbit);
         //out.exceptions(std::wofstream::badbit);
+        #endif
     }
 
     void Write(const std::string& path, const std::string& content) {
@@ -72,29 +77,37 @@ public:
 
     void Write(const std::string& path, const string& content) {
 
+#ifdef _WIN32
         auto p = GeneralUtilities::Convert(path);
+
         fwprintf(out, p.c_str());
         fwprintf(out, L"\t\t");
         fwprintf(out, content.c_str());
         fflush(out);
-        //std::setlocale(LC_ALL, "");
-        //std::locale::global(std::locale(""));
-        //try
-        //{
-        //    auto p = GeneralUtilities::Convert(path);
-        //    //out << p << "\t\t" << content << std::endl;
-        //    out.write(p.c_str(), p.size());
-        //    out.write(L"\t\t", 2);
-        //    out.write(content.c_str(), content.size());
-        //    out.flush();
-        //}
-        //catch (std::exception& e) {
-        //    std::cout << e.what() << std::endl;
-        //}
+#else
+        std::setlocale(LC_ALL, "");
+        std::locale::global(std::locale(""));
+        try
+        {
+           auto p = GeneralUtilities::Convert(path);
+           //out << p << "\t\t" << content << std::endl;
+           out.write(p.c_str(), p.size());
+           out.write(L"\t\t", 2);
+           out.write(content.c_str(), content.size());
+           out.flush();
+        }
+        catch (std::exception& e) {
+           std::cout << e.what() << std::endl;
+        }
+#endif
     }
 
     void close() {
+        #ifdef _WIN32
         fclose(out);
+        #else
+        out.close();
+        #endif
     }
 };
 

@@ -15,7 +15,8 @@ void
 StreamWriter::Write(const string& path, const string& content) {
 
     file_stream output;
-    output.open(path, std::ios::ios_base::out);
+    std::filesystem::path pp(path);
+    output.open(pp, std::ios::ios_base::out);
     output << content << std::endl;
     output.close();
 

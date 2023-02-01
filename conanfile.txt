@@ -5,6 +5,7 @@ gtest/1.13.0
 
 [generators]
 visual_studio
+make
 
 [options]
 libcurl:shared=True

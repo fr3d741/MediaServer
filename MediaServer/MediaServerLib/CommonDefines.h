@@ -7,9 +7,7 @@
 #include <sstream>
 #include <fstream>
 
-#ifdef _WIN32
-    typedef wchar_t char_t;
-#endif
+typedef wchar_t char_t;
 
 typedef std::basic_string<char_t> string;
 typedef std::basic_string_view<char_t> string_view;

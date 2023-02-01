@@ -4,6 +4,7 @@
 
 #include <chrono>
 #include <sstream>
+#include <iomanip>
 
 using namespace Logging;
 using namespace std::chrono_literals;

@@ -5,6 +5,7 @@
 #include <regex>
 #include <array>
 #include <codecvt>
+#include <limits>
 
 void
 GeneralUtilities::RightTrim(string& str) {
