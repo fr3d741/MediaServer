@@ -1,5 +1,7 @@
 #include <Utility/MessageQueue.h>
 
+#include <mutex>
+
 void 
 MessageQueue::Add(const std::string& msg) {
 

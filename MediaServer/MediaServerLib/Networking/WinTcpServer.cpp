@@ -1,5 +1,6 @@
 #include <Networking/WinTcpServer.h>
 
+#ifdef _WIN32
 #undef UNICODE
 
 #define WIN32_LEAN_AND_MEAN
@@ -152,3 +153,5 @@ int WinTcpServer::listenCore(unsigned short port) {
 
     return 0;
 }
+#else
+#endif
