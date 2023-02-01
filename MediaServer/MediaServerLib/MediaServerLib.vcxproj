@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{b3208e0e-08ac-4450-82b8-60ce811107b3}</ProjectGuid>
-    <RootNamespace>MediaServer</RootNamespace>
+    <ProjectGuid>{5528d524-5d76-4d5a-9b1f-95adac6094e9}</ProjectGuid>
+    <RootNamespace>MediaServerLib</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -56,6 +56,18 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -74,19 +86,8 @@
     <Import Project="..\conanbuildinfo.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <IntDir>$(SolutionDir)tmp\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
-    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
+    <IntDir>$(SolutionDir)\tmp\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -118,26 +119,25 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MEDIASERVER_LIB;_DEBUG;_CONSOLE;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)MediaserverLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\$(ProjectName);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Mediaserverlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>MEDIASERVER_LIB;NDEBUG;_CONSOLE;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(SolutionDir)\$(ProjectName);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -150,7 +150,52 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="CommonDefines.cpp" />
+    <ClCompile Include="Configuration\Configuration.cpp" />
+    <ClCompile Include="Configuration\IConfiguration.cpp" />
+    <ClCompile Include="Factories\ConfigurationFactory.cpp" />
+    <ClCompile Include="Factories\MessageQueueFactory.cpp" />
+    <ClCompile Include="Factories\TcpServerFactory.cpp" />
+    <ClCompile Include="FileSystem\FileSystemWatcher.cpp" />
+    <ClCompile Include="FileSystem\WinFSWatcher.cpp" />
+    <ClCompile Include="Logging\Logger.cpp" />
+    <ClCompile Include="MediaServer.cpp" />
+    <ClCompile Include="Model\CommonMedia.cpp" />
+    <ClCompile Include="Model\TvShow.cpp" />
+    <ClCompile Include="Networking\RestApi.cpp" />
+    <ClCompile Include="Networking\WinTcpServer.cpp" />
+    <ClCompile Include="Utility\GeneralUtilities.cpp" />
+    <ClCompile Include="Utility\JsonNode.cpp" />
+    <ClCompile Include="Utility\MessageQueue.cpp" />
+    <ClCompile Include="Utility\ScopedFunction.cpp" />
+    <ClCompile Include="Utility\StreamWriter.cpp" />
+    <ClCompile Include="Utility\XmlNode.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CommonDefines.h" />
+    <ClInclude Include="Configuration\Configuration.h" />
+    <ClInclude Include="Configuration\IConfiguration.h" />
+    <ClInclude Include="Factories\ConfigurationFactory.h" />
+    <ClInclude Include="Factories\MessageQueueFactory.h" />
+    <ClInclude Include="Factories\TcpServerFactory.h" />
+    <ClInclude Include="FileSystem\FileSystemWatcher.h" />
+    <ClInclude Include="FileSystem\WinFSWatcher.h" />
+    <ClInclude Include="Logging\ILogger.h" />
+    <ClInclude Include="Logging\Logger.h" />
+    <ClInclude Include="Macros.h" />
+    <ClInclude Include="MediaServer.h" />
+    <ClInclude Include="Model\CommonMedia.h" />
+    <ClInclude Include="Model\TvShow.h" />
+    <ClInclude Include="Networking\ITcpServer.h" />
+    <ClInclude Include="Networking\RestApi.h" />
+    <ClInclude Include="Networking\WinTcpServer.h" />
+    <ClInclude Include="Utility\GeneralUtilities.h" />
+    <ClInclude Include="Utility\IMessageQueue.h" />
+    <ClInclude Include="Utility\JsonNode.h" />
+    <ClInclude Include="Utility\MessageQueue.h" />
+    <ClInclude Include="Utility\ScopedFunction.h" />
+    <ClInclude Include="Utility\StreamWriter.h" />
+    <ClInclude Include="Utility\XmlNode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
