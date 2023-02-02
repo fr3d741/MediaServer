@@ -50,14 +50,14 @@ namespace Media {
 
         virtual void Fill(Logging::ILogger::Ptr logger, XmlNode& root, JsonNode::Ptr json, const std::vector<Property>& properties);
         virtual bool Init();
-        virtual std::map<std::string, XmlNode> CreateXml();
+        virtual std::map<std::wstring, XmlNode> CreateXml();
 
         static bool IsMediaFile(const std::filesystem::path& path);
 
     protected:
         virtual const char* Tmdb(TmdbTags key);
         virtual std::string GetDetails(const std::string& id);
-        virtual std::string GetFileName();
+        virtual std::wstring GetFileName();
         virtual JsonNode::Ptr GetDetails(JsonNode::Ptr json_ptr, std::function<string (JsonNode::Ptr)> get_title_fn);
     };
 }

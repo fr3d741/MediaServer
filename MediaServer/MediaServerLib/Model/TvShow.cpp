@@ -243,7 +243,7 @@ TvShow::Init() {
     return true;
 }
 
-std::map<std::string, XmlNode> 
+std::map<std::wstring, XmlNode> 
 TvShow::CreateXml() {
 
     auto result_map = CommonMedia::CreateXml();
@@ -256,10 +256,10 @@ TvShow::Tmdb(TmdbTags key) {
     return TmdbWords(key, MediaType::TvShow);
 }
 
-std::string 
+std::wstring 
 TvShow::GetFileName() {
 
-    return _entry.path().string().append("\\tvshow.nfo");
+    return _entry.path().generic_wstring().append(L"\\tvshow.nfo");
 }
 
 std::string
@@ -268,7 +268,7 @@ TvShow::GetDetails(const std::string& id) {
 }
 
 void
-TvShow::CreateEpisodeNfos(std::map<std::string, XmlNode>& result_map) {
+TvShow::CreateEpisodeNfos(std::map<std::wstring, XmlNode>& result_map) {
 
     std::map<std::string, string> season_episodes;
     GatherEpisodesFromFS(_logger, _entry, season_episodes);
@@ -287,6 +287,6 @@ TvShow::CreateEpisodeNfos(std::map<std::string, XmlNode>& result_map) {
         auto epiosde_json = proposed_episode_mapping[item.first];
         std::filesystem::path path(item.second);
         path.replace_extension(extension);
-        result_map[path.string()] = CreateEpisodeXml(epiosde_json);
+        result_map[path.generic_wstring()] = CreateEpisodeXml(epiosde_json);
     }
 }

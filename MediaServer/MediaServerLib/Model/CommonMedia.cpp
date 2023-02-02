@@ -334,6 +334,7 @@ CommonMedia::Init() {
     if (result_in_json.empty())
     {
         // TODO:
+        _logger->LogMessage(L"Empty json for" + _title);
         return false;
     }
     auto json = JsonNode::Parse(_logger, result_in_json);
@@ -398,7 +399,7 @@ CommonMedia::GetDetails(const std::string& id) {
     return RestApi::MovieDetails(id);
 }
 
-std::string
+std::wstring
 CommonMedia::GetFileName() {
 
     const std::filesystem::path extension(".nfo");
@@ -411,16 +412,16 @@ CommonMedia::GetFileName() {
             continue;
 
         auto path = dir_entry.path();
-        return path.replace_extension(extension).string();
+        return path.replace_extension(extension).wstring();
     }
 
-    return _entry.path().string() + "\\movie.nfo";
+    return _entry.path().wstring() + L"\\movie.nfo";
 }
 
-std::map<std::string, XmlNode>
+std::map<std::wstring, XmlNode>
 CommonMedia::CreateXml() {
 
-    std::map<std::string, XmlNode> xmls;
+    std::map<std::wstring, XmlNode> xmls;
     if (_details == nullptr)
     {
         _logger->LogMessage("This should never happen! No Json to create XML from!");

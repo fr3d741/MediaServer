@@ -9,20 +9,21 @@ OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 DEPS := $(OBJS:.o=.d)
 
 INC_DIRS := $(shell find $(SRC_DIRS) -type d | sed -e '/\.\/\./d')
+INC_DIRS += $(CONAN_INCLUDE_DIRS)
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 
-CPPFLAGS := $(INC_FLAGS) -MMD -MP
-CXXFLAGS := $(CONAN_CXXFLAGS) -std=c++20
+CPPFLAGS := $(INC_FLAGS) -MMD -MP -g
+CXXFLAGS := $(CONAN_CXXFLAGS) -std=c++20 -g
 
-CFLAGS              += $(CONAN_CFLAGS)
-CPPFLAGS            += $(addprefix -I, $(CONAN_INCLUDE_DIRS))
+CFLAGS              += -g $(CONAN_CFLAGS)
+LDFLAGS             += -g
 CPPFLAGS            += $(addprefix -D, $(CONAN_DEFINES))
 LDFLAGS             += $(addprefix -L, $(CONAN_LIB_DIRS))
 LDLIBS              += $(addprefix -l, $(CONAN_LIBS))
 EXELINKFLAGS        += $(CONAN_EXELINKFLAGS)
 
 $(BUILD_DIR)/$(TARGET_EXEC): $(OBJS)
-	$(CXX) $(OBJS) -o $@ $(LDFLAGS)
+	$(CXX) $(OBJS) -o $@ $(LDFLAGS) $(LDLIBS)
 
 $(BUILD_DIR)/%.c.o: %.c
 	mkdir -p $(dir $@)

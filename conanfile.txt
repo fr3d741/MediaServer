@@ -12,4 +12,4 @@ libcurl:shared=True
 gtest:shared=True
 
 [imports]
-bin, *.dll -> f:\Source\MediaServer\MediaServer\x64\Debug\
+bin, *.dll -> ../bin
